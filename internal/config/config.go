@@ -55,9 +55,9 @@ func Read() (Config, error) {
 	return cfg, nil
 }
 
-func (c Config) SetUser(username string) error {
+func (c *Config) SetUser(username string) error {
 	c.CurrentUserName = username
-	err := write(c)
+	err := write(*c)
 	if err != nil {
 		return err
 	}
