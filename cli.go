@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/google/uuid"
@@ -48,8 +47,7 @@ func handerLogin(s *state, cmd command) error {
 	name := cmd.args[0]
 	_, err := s.db.GetUser(context.Background(), name)
 	if err != nil {
-		fmt.Printf("login: user '%v' doesn't exist\n", name)
-		os.Exit(1)
+		return fmt.Errorf("login: user '%v' doesn't exist", name)
 	}
 	err = s.cfg.SetUser(name)
 	if err != nil {
@@ -66,8 +64,7 @@ func handlerRegister(s *state, cmd command) error {
 	name := cmd.args[0]
 	_, err := s.db.GetUser(context.Background(), name)
 	if err == nil {
-		fmt.Printf("register: user '%v' already exists\n", name)
-		os.Exit(1)
+		return fmt.Errorf("register: user '%v' already exists", name)
 	}
 	user, err := s.db.CreateUser(context.Background(), database.CreateUserParams{
 		ID:        uuid.New(),
@@ -93,7 +90,24 @@ func handlerRegister(s *state, cmd command) error {
 func handlerReset(s *state, cmd command) error {
 	err := s.db.DeleteAllUsers(context.Background())
 	if err != nil {
-		fmt.Printf("%v: error reseting the database: %v", cmd.name, err)
+		return fmt.Errorf("%v: error reseting the database: %v", cmd.name, err)
 	}
+	return nil
+}
+
+func handlerUsers(s *state, cmd command) error {
+	users, err := s.db.GetUsers(context.Background())
+	if err != nil {
+		return fmt.Errorf("%v: error getting all user info from the database: %v", cmd.name, err)
+	}
+
+	for _, user := range users {
+		userStr := fmt.Sprintf("* %v", user.Name)
+		if user.Name == s.cfg.CurrentUserName {
+			userStr += " (current)"
+		}
+		fmt.Println(userStr)
+	}
+
 	return nil
 }

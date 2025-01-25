@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/tierant5/gator/internal/config"
@@ -32,9 +33,12 @@ func main() {
 	cmds := commands{
 		cmds: map[string]func(*state, command) error{},
 	}
+
 	cmds.register("login", handerLogin)
 	cmds.register("register", handlerRegister)
 	cmds.register("reset", handlerReset)
+	cmds.register("users", handlerUsers)
+
 	args := os.Args
 	if len(args) < 2 {
 		err = fmt.Errorf("no command found")
@@ -45,7 +49,6 @@ func main() {
 	cmdArgs := args[2:]
 	err = cmds.run(st, command{name: cmdName, args: cmdArgs})
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 }
