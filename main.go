@@ -34,6 +34,7 @@ func main() {
 	}
 	cmds.register("login", handerLogin)
 	cmds.register("register", handlerRegister)
+	cmds.register("reset", handlerReset)
 	args := os.Args
 	if len(args) < 2 {
 		err = fmt.Errorf("no command found")

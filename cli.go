@@ -89,3 +89,11 @@ func handlerRegister(s *state, cmd command) error {
 
 	return nil
 }
+
+func handlerReset(s *state, cmd command) error {
+	err := s.db.DeleteAllUsers(context.Background())
+	if err != nil {
+		fmt.Printf("%v: error reseting the database: %v", cmd.name, err)
+	}
+	return nil
+}
