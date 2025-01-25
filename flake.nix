@@ -1,8 +1,8 @@
 {
-  description = "Flake for a Go project";
+  description = "Flake for a Go project with Postgres";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
   };
 
   outputs =
@@ -16,6 +16,9 @@
         nativeBuildInputs = with pkgs; [
           go
           gopls
+          goose
+          # sqls
+          sqlc
         ];
       };
     };

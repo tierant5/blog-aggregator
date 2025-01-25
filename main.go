@@ -1,10 +1,14 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
 
 	"github.com/tierant5/gator/internal/config"
+	"github.com/tierant5/gator/internal/database"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -14,13 +18,22 @@ func main() {
 		os.Exit(1)
 	}
 
+	db, err := sql.Open("postgres", cfg.DbUrl)
+	if err != nil {
+		fmt.Printf("could not open connection to database: %v", err)
+	}
+
+	dbQueries := database.New(db)
+
 	st := &state{
 		cfg: &cfg,
+		db:  dbQueries,
 	}
 	cmds := commands{
 		cmds: map[string]func(*state, command) error{},
 	}
 	cmds.register("login", handerLogin)
+	cmds.register("register", handlerRegister)
 	args := os.Args
 	if len(args) < 2 {
 		err = fmt.Errorf("no command found")
