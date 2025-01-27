@@ -34,6 +34,18 @@ func (r *RSSFeed) unescapeHtml() {
 	}
 }
 
+func (r *RSSFeed) PrintFeed(cmd command) {
+	fmt.Printf("%v: RSSFeed.Channel.Title: %v\n", cmd.name, r.Channel.Title)
+	fmt.Printf("%v: RSSFeed.Channel.Link: %v\n", cmd.name, r.Channel.Link)
+	fmt.Printf("%v: RSSFeed.Channel.Description: %v\n", cmd.name, r.Channel.Description)
+	for i, item := range r.Channel.Item {
+		fmt.Printf("%v: RSSFeed.Channel.Item[%v].Title: %v\n", cmd.name, i, item.Title)
+		fmt.Printf("%v: RSSFeed.Channel.Item[%v].Link: %v\n", cmd.name, i, item.Link)
+		fmt.Printf("%v: RSSFeed.Channel.Item[%v].Description: %v\n", cmd.name, i, item.Description)
+		fmt.Printf("%v: RSSFeed.Channel.Item[%v].PubDate: %v\n", cmd.name, i, item.PubDate)
+	}
+}
+
 func fetchFeed(ctx context.Context, feedURL string) (*RSSFeed, error) {
 	req, err := http.NewRequestWithContext(ctx, "GET", feedURL, nil)
 	if err != nil {
