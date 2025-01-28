@@ -4,6 +4,8 @@ A cli written in `go` for subscribing to and aggregating RSS feeds.
 
 ## Installation
 
+You will need an instance of `Postgres` running.
+
 To install, run `go install`, you can then run the `gator` command
 
 ## Configuration
@@ -27,8 +29,7 @@ gator users
 ```
 ### Switch user
 ```bash
-gator login <user>
-```
+gator login <user> ```
 ### Add a new RSS feed
 ```bash
 gator addfeed <rss_feed_name> <rss_feed_url>
@@ -58,8 +59,6 @@ gator browse <*optional limit>
 gator reset
 ```
 ## Developement
-
-You will need an instance of `Postgres` running.
 
 If you have `nix` installed, the easiest way to install all remaining depencencies is simply running the following in your root.
 ```bash
