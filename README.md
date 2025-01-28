@@ -29,7 +29,8 @@ gator users
 ```
 ### Switch user
 ```bash
-gator login <user> ```
+gator login <user>
+```
 ### Add a new RSS feed
 ```bash
 gator addfeed <rss_feed_name> <rss_feed_url>
